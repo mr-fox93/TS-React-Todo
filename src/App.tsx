@@ -7,6 +7,16 @@ const TodosForm = styled.div`
   flex-wrap: wrap;
 `;
 
+const Button = styled.button`
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: white;
+  :disabled {
+    cursor: not-allowed;
+    background-color: #e0e0e0;
+  }
+`;
+
 const App: React.FC = () => {
   type Todo = {
     text: string;
@@ -20,9 +30,11 @@ const App: React.FC = () => {
   const addTodo = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      const newTodo = { text: input, completed: false, id: uuidv4() };
-      setTodos((prevTodos) => [...prevTodos, newTodo]);
-      setInput("");
+      if (input) {
+        const newTodo = { text: input, completed: false, id: uuidv4() };
+        setTodos((prevTodos) => [...prevTodos, newTodo]);
+        setInput("");
+      }
     },
     [input]
   );
@@ -47,7 +59,12 @@ const App: React.FC = () => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
-        <button type="submit">Add to list</button>
+        <Button disabled={input.length <= 0} type="submit">
+          Add to list
+        </Button>
+        <Button disabled={todos.length <= 0} onClick={() => setTodos([])}>
+          Clear All
+        </Button>
         <ul>
           {todos.map((todo) => (
             <TodosForm key={todo.id}>
