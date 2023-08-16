@@ -80,6 +80,7 @@ const TodoTable: React.FC = () => {
         <TextField
           variant="outlined"
           value={newTask}
+          autoComplete="off"
           //label="New task"
           placeholder="enter new task..."
           onChange={(e) => setNewTask(e.target.value)}
@@ -96,6 +97,7 @@ const TodoTable: React.FC = () => {
           variant="contained"
           color="primary"
           onClick={addTask}
+          disabled={!newTask}
           sx={{
             width: "200px",
             height: "40px",
@@ -107,6 +109,7 @@ const TodoTable: React.FC = () => {
         <Button
           variant="contained"
           color="primary"
+          disabled={!tasks.length}
           onClick={() => setTasks([])}
           sx={{
             width: "200px",
