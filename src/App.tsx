@@ -13,17 +13,31 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 interface Task {
   id: string;
   name: string;
   completed: boolean;
   date: string;
+  priority: string;
 }
 
 const TodoTable: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState<string>("");
+  const [priority, setPriority] = useState<string>("Low");
+
+  const handleChange = (id: string, newPriority: string) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, priority: newPriority } : task
+      )
+    );
+  };
 
   const addTask = () => {
     const currentDateTime = new Date().toLocaleString();
@@ -35,6 +49,7 @@ const TodoTable: React.FC = () => {
           name: newTask,
           completed: false,
           date: currentDateTime,
+          priority: priority,
         },
       ]);
       setNewTask("");
@@ -81,7 +96,6 @@ const TodoTable: React.FC = () => {
           variant="outlined"
           value={newTask}
           autoComplete="off"
-          //label="New task"
           placeholder="enter new task..."
           onChange={(e) => setNewTask(e.target.value)}
           onKeyPress={handleKeyPress}
@@ -129,6 +143,7 @@ const TodoTable: React.FC = () => {
                 <TableCell>Tasks</TableCell>
                 <TableCell>Delete</TableCell>
                 <TableCell>Add Date</TableCell>
+                <TableCell>Priority</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -151,6 +166,24 @@ const TodoTable: React.FC = () => {
                     </IconButton>
                   </TableCell>
                   <TableCell>{task.date}</TableCell>
+                  <TableCell style={{ padding: "1rem" }}>
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={task.priority}
+                        label="Priority"
+                        onChange={(e: SelectChangeEvent) =>
+                          handleChange(task.id, e.target.value)
+                        }
+                      >
+                        <MenuItem value={"Low"}>Low</MenuItem>
+                        <MenuItem value={"Medium"}>Medium</MenuItem>
+                        <MenuItem value={"High"}>High</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
