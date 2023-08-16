@@ -18,6 +18,7 @@ interface Task {
   id: string;
   name: string;
   completed: boolean;
+  date: string;
 }
 
 const TodoTable: React.FC = () => {
@@ -25,8 +26,17 @@ const TodoTable: React.FC = () => {
   const [newTask, setNewTask] = useState<string>("");
 
   const addTask = () => {
+    const currentDateTime = new Date().toLocaleString();
     if (newTask) {
-      setTasks([...tasks, { id: uuidv4(), name: newTask, completed: false }]);
+      setTasks([
+        ...tasks,
+        {
+          id: uuidv4(),
+          name: newTask,
+          completed: false,
+          date: currentDateTime,
+        },
+      ]);
       setNewTask("");
     }
   };
@@ -94,6 +104,18 @@ const TodoTable: React.FC = () => {
         >
           Add
         </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setTasks([])}
+          sx={{
+            width: "200px",
+            height: "40px",
+            padding: 0,
+          }}
+        >
+          Delete All
+        </Button>
       </Box>
       <Paper sx={{ width: "80%", mb: 2 }}>
         <TableContainer>
@@ -103,6 +125,7 @@ const TodoTable: React.FC = () => {
                 <TableCell padding="checkbox"></TableCell>
                 <TableCell>Tasks</TableCell>
                 <TableCell>Delete</TableCell>
+                <TableCell>Add Date</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -124,6 +147,7 @@ const TodoTable: React.FC = () => {
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
+                  <TableCell>{task.date}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
