@@ -17,6 +17,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { useTheme } from "@mui/material/styles";
 
 interface Task {
   id: string;
@@ -90,6 +91,8 @@ const TodoTable: React.FC = () => {
           marginBottom: "20px",
           marginTop: "20px",
           alignItems: "center",
+          flexDirection: ["column", "column", "row"],
+          "& > *": { width: ["100%", "auto"] },
         }}
       >
         <TextField
@@ -134,15 +137,15 @@ const TodoTable: React.FC = () => {
           Delete All
         </Button>
       </Box>
-      <Paper sx={{ width: "80%", mb: 2 }}>
+      <Paper sx={{ width: ["95%", "80%"], mb: 2 }}>
         <TableContainer>
-          <Table>
+          <Table sx={{ tableLayout: ["fixed", "auto"] }}>
             <TableHead>
               <TableRow>
                 <TableCell padding="checkbox"></TableCell>
-                <TableCell>Tasks</TableCell>
-                <TableCell>Delete</TableCell>
-                <TableCell>Add Date</TableCell>
+                <TableCell sx={{ width: ["20px", "auto"] }}>Tasks</TableCell>
+                <TableCell sx={{ width: ["20px", "auto"] }}>Delete</TableCell>
+                <TableCell sx={{ width: ["45px", "auto"] }}>Date</TableCell>
                 <TableCell>Priority</TableCell>
               </TableRow>
             </TableHead>
@@ -167,7 +170,7 @@ const TodoTable: React.FC = () => {
                   </TableCell>
                   <TableCell>{task.date}</TableCell>
                   <TableCell style={{ padding: "1rem" }}>
-                    <FormControl fullWidth>
+                    <FormControl fullWidth sx={{ minWidth: ["100px", "auto"] }}>
                       <InputLabel id="demo-simple-select-label">
                         Priority
                       </InputLabel>
